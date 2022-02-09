@@ -34,7 +34,21 @@ app.post('/api/signup', (req, res, next) =>{
   console.log(req.body);
   res.status(201).json({ message });
 });
-
+/*
+ app.get('/api/signup', (req, res, next) =>{
+    const user = [
+      {
+        email: 'dupo99@oo.com',
+        password: '123456'
+      },
+      {
+        email: 'jean99@oo.com',
+        password: '000000'
+      }
+    ];
+    res.status(200).json(signup);
+  });
+ */
 
 app.get('/api/signup', (req, res, next) =>{
     const user =new User({
