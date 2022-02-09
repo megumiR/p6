@@ -1,7 +1,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
-//const User = require('./models/sauce');
+const User = require('./models/user');
+//const Sauce = require('./models/sauce');
 
 /******** MongoDB connect to cluster0 *********/
 mongoose.connect('mongodb+srv://new-user01:<new-user01>@cluster0.ybmmt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -34,22 +35,8 @@ app.post('/api/signup', (req, res, next) =>{
   res.status(201).json({ message });
 });
 
-app.get('/api/signup', (req, res, next) =>{
-  const user = [
-    {
-      email: 'dupo99@oo.com',
-      password: '123456'
-    },
-    {
-      email: 'jean99@oo.com',
-      password: '000000'
-    }
-  ];
-  res.status(200).json(signup); //status 200Ok ->send data with json
-});
 
-/*
-app.post('/api/signup', (req, res, next) =>{
+app.get('/api/signup', (req, res, next) =>{
     const user =new User({
         ...req.body // L'opérateur spread
     });
@@ -57,7 +44,7 @@ app.post('/api/signup', (req, res, next) =>{
         .then(() => res.status(201).json({ message: 'object saved'}))
         .catch(error => res.status(400).json({ error }));
 });
-
+/*
 app.post('/api/auth', nnnRoutes);
 app.post('/api/auth', nnnRoutes);
 */
