@@ -18,6 +18,11 @@ app.use((req, res, next) => {
   res.json({ message: 'request has received' })
 });
 
+/******************* ajouter des routes**************/
+const userRoutes = require('./routes/user');
+//const sauceRoutes = require('./routes/sauce')
+/********* FIN: ajouter des routes****************/
+
 app.use(express.json()); //acceder aux requetes json.body
 
 /******* Controle d'acces pour les routes generales*********/
@@ -58,8 +63,10 @@ app.get('/api/signup', (req, res, next) =>{
         .then(() => res.status(201).json({ message: 'object saved'}))
         .catch(error => res.status(400).json({ error }));
 });
+
+/********** Les routes ajoutes passent les chemins suivants ***********/
+app.post('/api/auth', userRoutes);
 /*
-app.post('/api/auth', nnnRoutes);
-app.post('/api/auth', nnnRoutes);
+app.post('/api/xxx', sauceRoutes);
 */
 module.exports = app; 
