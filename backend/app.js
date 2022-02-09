@@ -34,7 +34,43 @@ app.use((req, res, next) => {
 });
 /********************* FIN: controle d'acces routes generales*****************/
 //app.use(bodyParser.json());  //maybe not body parser...
+/*
+app.post('/', (req, res, next) => {
+  delete req.body._id;  //??
+  const sauce = new Sauce({
+    ...req.body
+  });
+  sauce.save()
+    .then(() => res.status(201).json({ message: 'new sauce created' }))
+    .catch(error => res.status(400).json({ error }));
+});
 
+//update
+app.put('/:id', (req, res, next) => {
+  Sauce.updateOne({ _id: req.params.id}, { ...req.body, _id: req.params.id}) 
+    .then
+    .catch
+});
+
+//delete
+app.delete('/:id', (req, res, next) => {
+  Sauce.deleteOne({ _id: req.params.id})
+    .then
+    .catch
+});
+//recuper d'une thing specifique 
+app.get('/api/stuff/:id', (req, res, next) => {
+  Sauce.findOne({ _id: req.params.id})
+    .then
+    .catch
+});
+//recuperer de la liste
+app.use('/api/stuff', (req, res, next) => {
+  Thing.find()
+    .then
+    .catch
+});
+*/
 app.post('/api/signup', (req, res, next) =>{
   console.log(req.body);
   res.status(201).json({ message });
