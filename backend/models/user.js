@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator'); // to activate uni
 
 /************ Set up rules*************/
 const userSchema = mongoose.Schema({
-    email: { type: String, required: true, unique: true },  //unique
+    email: { type: String, required: true, unique: true },  
     password: { type: String, required: true }
 });
 

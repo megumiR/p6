@@ -13,4 +13,4 @@ router.delete('/:id', auth, sauceCtrl.deleteArticle);
 router.get('/', auth, multer, sauceCtrl.getAllSaucearticles);
 
 router.post('/:id/like', auth, sauceCtrl.likeArticle);
-//auth added and nodemon dosent work for signin login
+//auth added and nodemon didnt work for signin login
