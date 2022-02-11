@@ -63,6 +63,12 @@ exports.getOneArticle = (req, res, next) => {
 };
   
 exports.updateArticle = (req, res, next) => {
+    const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
+    {
+        ...JSON.parse(req.body.sauce),
+        image: `/images/${req.file.filename}`  //`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : { ...req.body };
+/*
     const sauce = new Sauce({      //  ...req.body ?Either sauce as JSON
         _id: req.params.id,        // _id?? need to put usersLiked n usersDisliked?
         name: req.body.name,
@@ -75,11 +81,30 @@ exports.updateArticle = (req, res, next) => {
         usersDisliked: req.body.usersDisliked,      
         userId: req.body.userId
     });
-
+*/
+    Sauce.updateOne({_id: req.params.id}, { ...sauceObject, _id: req.params.id})
+        .then(() => {
+            res.status(200).json({ message: 'Votre sauce est bien modifié!' });
+        })
+        .catch((error) => {
+            res.status(400).json({ error });
+        });
+};
 // 'if' modification avec le fichier img ou pas 
-    
-
-
+/*    FIRST TRY --
+exports.updateArticle = (req, res, next) => {
+    const sauce = new Sauce({      //  ...req.body ?Either sauce as JSON
+        _id: req.params.id,        // _id?? need to put usersLiked n usersDisliked?
+        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        description: req.body.description,
+        mainPepper: req.body.mainPepper,
+        imageUrl: req.body.imageUrl,
+        heat: req.body.heat,
+        usersLiked: req.body.usersLiked,
+        usersDisliked: req.body.usersDisliked,      
+        userId: req.body.userId
+    });
     Sauce.updateOne({_id: req.params.id}, sauce)
         .then(() => {
             res.status(201).json({ message: 'Votre sauce est bien modifié!' });
@@ -88,7 +113,8 @@ exports.updateArticle = (req, res, next) => {
             res.status(400).json({ error });
         });
 };
-  
+
+*/
 exports.deleteArticle = (req, res, next) => {
     Sauce.deleteOne({_id: req.params.id})
         .then(() => {
