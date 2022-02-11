@@ -4,6 +4,7 @@ const express = require('express');
 
 //const User = require('./models/user');
 //const Sauce = require('./models/sauce');
+const path = require('path'); //for taking images ??
 
 /******** MongoDB connect to cluster0 *********/
 mongoose.connect('mongodb+srv://megumi:JZw7qlKVtgp24sVW@clusterprojet6piiquante.ybmmt.mongodb.net/test?retryWrites=true&w=majority',
@@ -63,6 +64,9 @@ app.get('/api/signup', (req, res, next) =>{
         .then(() => res.status(201).json({ message: 'object saved'}))
         .catch(error => res.status(400).json({ error }));
 }); */
+/************** Gerer la date du dossier images en maniere statique pour framework express*****************/
+app.use('/images', express.static(path.join(__dirname, 'images')));
+/************** FIN: Gerer la date du dossier images en maniere statique *******/ 
 
 /********** Les routes ajoutes passent les chemins suivants ***********/
 app.post('/api/auth', userRoutes);
