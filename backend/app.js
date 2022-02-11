@@ -1,17 +1,21 @@
-const express = require('express');
+/****** mongoose d'abord *********/
 const mongoose = require('mongoose');
+const express = require('express');
 
 const User = require('./models/user');
 //const Sauce = require('./models/sauce');
 
 /******** MongoDB connect to cluster0 *********/
-mongoose.connect('mongodb+srv://new-user01:<new-user01>@cluster0.ybmmt.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+mongoose.connect('mongodb+srv://megumi:<JZw7qlKVtgp24sVW>@clusterprojet6piiquante.ybmmt.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+//pw: JZw7qlKVtgp24sVW
+//dans le course: 'mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority'
   /*********************** FIN: mongodb***************/
+
 
 const app = express();
 app.use((req, res, next) => {
