@@ -106,7 +106,11 @@ app.get('/api/signup', (req, res, next) =>{
 
 /********** Les routes ajoutes passent les chemins suivants ***********/
 app.post('/api/auth', userRoutes);
+app.use('/api/sauces', sauceRoutes);
 /*
-app.post('/api/xxx', sauceRoutes);
+app.post('/api/sauces', sauceRoutes);
+app.put('/api/sauces', sauceRoutes);
+app.delete('/api/sauces', sauceRoutes);
+app.get('/api/sauces', sauceRoutes);
 */
 module.exports = app; 
