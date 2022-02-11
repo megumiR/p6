@@ -5,6 +5,7 @@ model.exports = (req, res, next) => {
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, 'RAMDOM_TOKEN_SECRET');
         const userId = decodedToken.userId;
+//        req.userId = userId; //the id which sends request = token's id
         if (req.body.userId && req.body.userId !== userId) {
             throw 'Invalid userId' ;
         } else {
