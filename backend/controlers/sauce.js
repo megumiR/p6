@@ -2,6 +2,7 @@
 const Sauce = require('../models/sauce');  
 
 //const jwt = require('jsonwebtoken');   no need?
+const fs = require('fs');
 
 /**************** hash avec la fonction bcrypt pour le mot de passe ************/
 
@@ -66,7 +67,7 @@ exports.updateArticle = (req, res, next) => {
     const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
     {
         ...JSON.parse(req.body.sauce),
-        image: `/images/${req.file.filename}`  //`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        image: `images/${req.file.filename}`  //`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ...req.body };
 /*
     const sauce = new Sauce({      //  ...req.body ?Either sauce as JSON
@@ -116,13 +117,21 @@ exports.updateArticle = (req, res, next) => {
 
 */
 exports.deleteArticle = (req, res, next) => {
-    Sauce.deleteOne({_id: req.params.id})
-        .then(() => {
-            res.status(200).json({ message: 'Supprimé!' });
+    Sauce.findOne({_id: req.params.id})
+        .then(sauce => {
+            const filename = sauce.imageUrl.split('/images/')[1];
+            fs.unlink(`images/${filename}`, () => {                  // fonction unlink pour supprimer
+                Sauce.deleteOne({_id: req.params.id})
+                    .then(() => 
+                        res.status(200).json({ message: 'Supprimé!' }))
+                    .catch((error) => {
+                        res.status(400).json({ error })
+                    });
+            });
         })
-        .catch((error) => {
-            res.status(400).json({ error });
-        });
+        .catch((error) => 
+            res.status(500).json({ error })
+        );
 };
   
 exports.getAllSaucearticles = (req, res, next) => {
