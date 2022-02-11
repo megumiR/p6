@@ -6,7 +6,7 @@ const MINE_TYPE = {
 };
 
 const storage = multer.diskStorage({
-    destination = (req, file, callback) => {
+    destination: (req, file, callback) => {
         callback(null, 'images');
     },
     filename: (req, file, callback) => {

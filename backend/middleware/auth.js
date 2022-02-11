@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { model, modelNames } = require('mongoose');
 
-model.exports = (req, res, next) => {
+module.exports = (req, res, next) => {
     try {   //many error occurs so put in try-catch
         const token = req.headers.authorization.split(' ')[1];
         const decodedToken = jwt.verify(token, 'RAMDOM_TOKEN_SECRET');

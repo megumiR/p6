@@ -55,7 +55,8 @@ exports.updateArticle = (req, res, next) => {
         userId: req.body.userId
     });
 
-// with 'if' avec img ou pas 
+// 'if' modification avec le fichier img ou pas 
+    
 
 
     Sauce.updateOne({_id: req.params.id}, sauce)
@@ -88,5 +89,34 @@ exports.getAllSaucearticles = (req, res, next) => {
 };
 
 exports.likeArticle = (req, res, next) => {
-   
+    const sauce = new Sauce({
+/*        name: req.body.name,
+        manufacturer: req.body.manufacturer,
+        description: req.body.description,
+        mainPepper: req.body.mainPepper,
+        imageUrl: req.body.imageUrl,
+        heat: req.body.heat,
+        likes: 0,        // req.body.likes?
+        dislikes: 0,   //req.body.dislikes     */
+        usersLiked: [],  //t les usersLiked et usersDisliked avec des tableaux vides
+        usersDisliked: [], //req.body.usersLiked      req.body.usersDisliked
+        userId: req.body.userId
+    });
+/*    if () {
+//        sauce.usersLiked += 
+    } else if () {
+
+    } else {
+
+    }*/
+    sauce.save()
+        .then(() => {
+            res.status(201).json({ message: 'Votre sauce est bien enregistré!' });
+        })
+        .catch((error) => {
+            res.status(400).json({ error }); 
+        }
+    );
+
+
 };
