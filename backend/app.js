@@ -19,14 +19,10 @@ mongoose.connect('mongodb+srv://megumi:JZw7qlKVtgp24sVW@clusterprojet6piiquante.
 
 
 const app = express();
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   res.json({ message: 'TEST: request has received' })
-});
+});    */
 
-/******************* ajouter des routes**************/
-const userRoutes = require('./routes/user');
-const sauceRoutes = require('./routes/sauce')
-/********* FIN: ajouter des routes****************/
 
 app.use(express.json()); //acceder aux requetes json.body
 
@@ -66,9 +62,14 @@ app.get('/api/signup', (req, res, next) =>{
 }); */
 /************** Gerer la date du dossier images en maniere statique pour framework express*****************/
 app.use('/images', express.static(path.join(__dirname, 'images')));
-/************** FIN: Gerer la date du dossier images en maniere statique *******/ 
+/************** FIN: Gerer la date du dossier images en maniere statique *********************************/ 
 
-/********** Les routes ajoutes passent les chemins suivants ***********/
+/******************* ajouter des routes**************/
+const userRoutes = require('./routes/user');
+const sauceRoutes = require('./routes/sauce')
+/********* FIN: ajouter des routes****************/
+
+/********** Les routes d'autentificartion et  ***********/
 app.post('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 /*

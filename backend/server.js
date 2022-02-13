@@ -1,5 +1,5 @@
-const http = require('http');   
-/******** si je met https, server ne reponse pas (erreur 404)********/
+const https = require('https');   
+/******** si je met https, server ne repondait pas (erreur 404)********/
 
 const app = require('./app');
 
@@ -41,13 +41,7 @@ const errorHandler = error => {
 };
   
 
-/***** MongoDB si je vois le message , DB marche?? ****
-const server = http.createServer((req, res) => {
-    res.end('Voilà la réponse du serveur !');
-});
-change à lien suivant apres cree appjs
-**********/
-const server = http.createServer(app); //appjs (using express framework) send and receive requests n responses
+const server = https.createServer(app); //appjs (using express framework) send and receive requests n responses
 
 /*************** all show on the console (eventListener, which port on which server address) ******************/
 server.on('error', errorHandler);
