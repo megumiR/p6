@@ -49,7 +49,7 @@ const sauceRoutes = require('./routes/sauce')
 
 
 /********* Les routes d'autentificartion et  ***********/
-app.post('/api/auth', userRoutes);
+app.use('/api/auth', userRoutes);   // pas de app.post
 app.use('/api/sauces', sauceRoutes);
 /*
 app.post('/api/sauces', sauceRoutes);

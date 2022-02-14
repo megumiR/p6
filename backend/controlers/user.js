@@ -11,7 +11,7 @@ exports.signup = (req, res, next) => {     //?? https://www.youtube.com/watch?v=
                 email: req.body.email,
                 password: hash   // not 'req.body.password'
             });
-        });
+        
         user.save()
             .then(() => 
                 res.status(201).json({ message: 'Utilisateur est crée!' })
@@ -22,7 +22,8 @@ exports.signup = (req, res, next) => {     //?? https://www.youtube.com/watch?v=
         .catch(error => 
             res.status(500).json({ error })
         );
-        next();
+    });
+        //next();
 };
 
 

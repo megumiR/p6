@@ -1,6 +1,6 @@
-/************ Imporeter https pour un programe qui ecoute /repond les requete ***********/
-const https = require('https');   
-/************ FIN: Imporeter https *********************/
+/************ Imporeter http pour un programe qui ecoute /repond les requete ***********/
+const http = require('http');   
+/************ FIN: Imporeter http *********************/
 
 
 /************ Importer le fichier et mettre le port pour que app.js peut trouner ***********************/
@@ -48,11 +48,11 @@ const errorHandler = error => {
 /****** FIN: rechercher les erreurs et les gerer, enregistre ****************************/  
 
 
-/******* Creer un server du package https ****************/
+/******* Creer un server du package http ****************/
 //(function which will be called each req/res) 
 //  -> appjs (using express framework) send/receive requests n responses
-const server = https.createServer(app);
-/******* FIN: Creer un server du package https ***********/
+const server = http.createServer(app);
+/******* FIN: Creer un server du package http ***********/
 
 
 /*************** enregistre eventLister et affichier dans la console(eventListener, quel port, sur quel adresse serveur) ******************/
