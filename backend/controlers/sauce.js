@@ -131,19 +131,6 @@ exports.getAllSaucearticles = (req, res, next) => {
 };
 
 exports.likeArticle = (req, res, next) => {
-    const sauce = new Sauce({
-/*        name: req.body.name,
-        manufacturer: req.body.manufacturer,
-        description: req.body.description,
-        mainPepper: req.body.mainPepper,
-        imageUrl: req.body.imageUrl,
-        heat: req.body.heat,
-        likes: 0,        // req.body.likes?
-        dislikes: 0,   //req.body.dislikes     */
-        usersLiked: [],  //t les usersLiked et usersDisliked avec des tableaux vides
-        usersDisliked: [], //req.body.usersLiked      req.body.usersDisliked
-        userId: req.body.userId
-    });
 /*   requete  body inclut userId, like 0/1/-1
 */
     Sauce.findOne({_id: req.params.id}) //we call _id as the id from frontend 

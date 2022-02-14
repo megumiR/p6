@@ -26,7 +26,7 @@ const app = express();
 
 app.use(express.json()); //acceder aux requetes json.body
 
-/******* Controle d'acces pour les routes generales***************************/
+/******* Controle d'acces pour les API  ***************************/
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
