@@ -1,6 +1,8 @@
+/************ Imporeter https pour un programe qui ecoute /repond les requete ***********/
 const https = require('https');   
-/******** si je met https, server ne repondait pas (erreur 404)********/
+/************ FIN: Imporeter https *********************/
 
+/************ Importer le fichier et mettre le port port app.js peut trouner ***********************/
 const app = require('./app');
 
 //when port is valid, return port
@@ -18,6 +20,8 @@ const normalizePort = val => {
 const port = normalizePort(process.env.PORT || '3000');
 
 app.set('port', port);
+/************ FIN: Importer le fichier ***********************/
+
 
 /****** find errors n stock in server*******/
 const errorHandler = error => {
@@ -40,8 +44,13 @@ const errorHandler = error => {
     }
 };
   
+/******* Creer un server du package https ****************/
+//(function which will be called each req/res) 
+//  -> appjs (using express framework) send/receive requests n responses
+const server = https.createServer(app);
+/******* FIN: Creer un server du package https ***********/
 
-const server = https.createServer(app); //appjs (using express framework) send and receive requests n responses
+
 
 /*************** all show on the console (eventListener, which port on which server address) ******************/
 server.on('error', errorHandler);
@@ -51,4 +60,7 @@ server.on('listening', () => {
     console.log('Listening on ' + bind);
 });
 
+
+/********** Server ecouter la requete envoyé (qui passe par ce port)***********/
 server.listen(port);
+/********** FIN: Server ecouter la requete  ***********/

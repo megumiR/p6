@@ -1,6 +1,7 @@
-/****** mongoose d'abord *********/
+/****** Importer framework et (mongoose d'abord) *********/
 const mongoose = require('mongoose');
 const express = require('express');
+
 
 //const User = require('./models/user');
 //const Sauce = require('./models/sauce');
@@ -17,11 +18,9 @@ mongoose.connect('mongodb+srv://megumi:JZw7qlKVtgp24sVW@clusterprojet6piiquante.
 //dans le course: 'mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority'
   /*********************** FIN: mongodb***************/
 
-
+/***** Appeler la method express(qui permet de creer application express) *********/
 const app = express();
-/* app.use((req, res, next) => {
-  res.json({ message: 'TEST: request has received' })
-});    */
+
 
 
 app.use(express.json()); //acceder aux requetes json.body
@@ -78,4 +77,7 @@ app.put('/api/sauces', sauceRoutes);
 app.delete('/api/sauces', sauceRoutes);
 app.get('/api/sauces', sauceRoutes);
 */
+
+/*********** Exporter l'application (const app) pour etre accedé par autres fichiers et server************/
 module.exports = app; 
+/*********** FIN: Exporter l'application (const app) ***************/
