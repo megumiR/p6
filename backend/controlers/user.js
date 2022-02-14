@@ -4,26 +4,24 @@ const User = require('../models/user');  //bring models
 const jwt = require('jsonwebtoken');
 
 /**************** hash avec la fonction bcrypt pour le mot de passe ************/
-exports.signup = (req, res, next) => {     //?? https://www.youtube.com/watch?v=FC7bxxkFLfM&list=PLF88SKt6r7NbipYFd8-xPRAgelSNMTQgm&index=146
+exports.signup = (req, res, next) => {                                                      //?? https://www.youtube.com/watch?v=FC7bxxkFLfM&list=PLF88SKt6r7NbipYFd8-xPRAgelSNMTQgm&index=146
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
                 email: req.body.email,
                 password: hash   // not 'req.body.password'
             });
-        
-        user.save()
-            .then(() => 
-                res.status(201).json({ message: 'Utilisateur est crée!' })
-            )
-            .catch(error => 
-                res.status(400).json({ error })
-            )
+            user.save()
+                .then(() => 
+                    res.status(201).json({ message: 'Utilisateur est crée!' })
+                )
+                .catch(error => 
+                    res.status(400).json({ error })
+                );
+        })   
         .catch(error => 
             res.status(500).json({ error })
         );
-    });
-        //next();
 };
 
 
