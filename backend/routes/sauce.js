@@ -13,5 +13,6 @@ router.delete('/:id', auth, sauceCtrl.deleteArticle);
 router.get('/', auth, multer, sauceCtrl.getAllSaucearticles);
 
 router.post('/:id/like', auth, sauceCtrl.likeArticle);
-//auth added and nodemon didnt work for signin login
+
+
 module.exports = router;

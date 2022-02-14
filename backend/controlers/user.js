@@ -22,6 +22,7 @@ exports.signup = (req, res, next) => {     //?? https://www.youtube.com/watch?v=
         .catch(error => 
             res.status(500).json({ error })
         );
+        next();
 };
 
 
