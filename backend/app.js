@@ -1,13 +1,12 @@
-/****** Importer framework et (mongoose d'abord) *********/
+/****** Importer framework Express, Mongoose(mongoose d'abord)et path *********/
 const mongoose = require('mongoose');
 const express = require('express');
 
-
-//const User = require('./models/user');
-//const Sauce = require('./models/sauce');
 const path = require('path'); //for taking images ??
+/****** FIN: Importer framework Express, Mongoose et path ********************/
 
-/******** MongoDB connect to cluster0 *********/
+
+/****** MongoDB Atlas connecte à cluster *************************************/
 mongoose.connect('mongodb+srv://megumi:JZw7qlKVtgp24sVW@clusterprojet6piiquante.ybmmt.mongodb.net/test?retryWrites=true&w=majority',
   { useNewUrlParser: true,
     useUnifiedTopology: true })
@@ -16,16 +15,18 @@ mongoose.connect('mongodb+srv://megumi:JZw7qlKVtgp24sVW@clusterprojet6piiquante.
 
 //pw: JZw7qlKVtgp24sVW
 //dans le course: 'mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority'
-  /*********************** FIN: mongodb***************/
+/******* FIN: MongoDB Atlas connecte à cluster ***********************************/
 
-/***** Appeler la method express(qui permet de creer application express) *********/
+
+/*******   *********/
+//Appeler la method express(qui permet de creer application express)
 const app = express();
 
 
 
 app.use(express.json()); //acceder aux requetes json.body
 
-/******* Controle d'acces pour les routes generales*********/
+/******* Controle d'acces pour les routes generales***************************/
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
@@ -35,40 +36,19 @@ app.use((req, res, next) => {
 /********************* FIN: controle d'acces routes generales*****************/
 //app.use(bodyParser.json());  //maybe not body parser...
 
-/*
- app.get('/api/signup', (req, res, next) =>{
-    const user = [
-      {
-        email: 'dupo99@oo.com',
-        password: '123456'
-      },
-      {
-        email: 'jean99@oo.com',
-        password: '000000'
-      }
-    ];
-    res.status(200).json(signup);
-  });
- */
-/*******  ?????????
-app.get('/api/signup', (req, res, next) =>{
-    const user =new User({
-        ...req.body // L'opérateur spread
-    });
-    user.save()
-        .then(() => res.status(201).json({ message: 'object saved'}))
-        .catch(error => res.status(400).json({ error }));
-}); */
+
 /************** Gerer la date du dossier images en maniere statique pour framework express*****************/
 app.use('/images', express.static(path.join(__dirname, 'images')));
 /************** FIN: Gerer la date du dossier images en maniere statique *********************************/ 
 
-/******************* ajouter des routes**************/
+
+/********* ajouter des routes **********************/
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce')
 /********* FIN: ajouter des routes****************/
 
-/********** Les routes d'autentificartion et  ***********/
+
+/********* Les routes d'autentificartion et  ***********/
 app.post('/api/auth', userRoutes);
 app.use('/api/sauces', sauceRoutes);
 /*
@@ -77,6 +57,8 @@ app.put('/api/sauces', sauceRoutes);
 app.delete('/api/sauces', sauceRoutes);
 app.get('/api/sauces', sauceRoutes);
 */
+/********* FIN: Les routes d'autentificartion et  ***********/
+
 
 /*********** Exporter l'application (const app) pour etre accedé par autres fichiers et server************/
 module.exports = app; 

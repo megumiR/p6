@@ -2,7 +2,8 @@ const Sauce = require('../models/sauce');
 
 const fs = require('fs');
 
-
+//??????????? Je dois mettre next(); dans chaque logiques sauf le derniere?
+// -> 引用(citation à): https://openclassrooms.com/en/courses/6390246-passez-au-full-stack-avec-node-js-express-et-mongodb/6466277-creez-une-application-express
 //postArticle, deleteArticle, getAllSaucearticles need Autorization
 
 exports.postArticle = (req, res, next) => {
