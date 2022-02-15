@@ -33,8 +33,28 @@ exports.postArticle = (req, res, next) => {
         }
     );
 }; */
+exports.postSauce = (req, res, next) => {
+    const sauceObject = JSON.parse(req.body.sauce);
+    delete sauceObject._id;
+    const sauce = new Sauce({
+        ...sauceObject,     
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
+        likes: 0,        
+        dislikes: 0,   
+        usersLiked: [],  // les id usersLiked et usersDisliked avec des tableaux vides
+        usersDisliked: []
+    });
+    sauce.save()
+        .then(() => {
+            res.status(201).json({ message: 'Votre sauce est bien enregistré!' });
+        })
+        .catch((error) => {
+            res.status(400).json({ error }); 
+        }
+    );
+};
 // COPIED et modifie par le course----------
-exports.postArticle = (req, res, next) => {
+/*exports.postSauce = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     const sauce = new Sauce({
@@ -49,7 +69,7 @@ exports.postArticle = (req, res, next) => {
             res.status(400).json({ error }); 
         }
     );
-};
+};*/
 //ECMA2017...??  
 //findById --Finds a single document by its _id field. 
 //findById(id) is almost* equivalent to findOne({ _id: id }). 
@@ -64,7 +84,7 @@ exports.postArticle = (req, res, next) => {
 };
 */
 
-exports.getOneArticle = (req, res, next) => {
+exports.getOneSauce = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
             res.status(200).json(sauce);
@@ -93,7 +113,7 @@ exports.updateArticle = (req, res, next) => {
 };
 */
 //  CHANGE pour supprimer l'image dans le dossier image
-exports.updateArticle = (req, res, next) => {
+exports.updateSauce = (req, res, next) => {
     
     const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
     {
@@ -120,7 +140,7 @@ exports.updateArticle = (req, res, next) => {
 };
 
 
-exports.deleteArticle = (req, res, next) => {
+exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then(sauce => {
             const filename = sauce.imageUrl.split('/images/')[1];
@@ -138,7 +158,7 @@ exports.deleteArticle = (req, res, next) => {
         );
 };
   
-exports.getAllSaucearticles = (req, res, next) => {  
+exports.getAllSauces = (req, res, next) => {  
     Sauce.find()
         .then((sauces) => {
             res.status(200).json(sauces);
@@ -148,7 +168,7 @@ exports.getAllSaucearticles = (req, res, next) => {
         });
 };
 
-exports.likeArticle = (req, res, next) => {
+exports.likeSauce = (req, res, next) => {
 //   requete  body inclut userId, like 0/1/-1
     Sauce.findOne({_id: req.params.id}) //we call _id as the id from frontend 
     
