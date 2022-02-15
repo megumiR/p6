@@ -34,7 +34,7 @@ exports.postArticle = (req, res, next) => {
     );
 }; */
 // COPIED et modifie par le course----------
-exports.postArticle = (req, res) => {
+exports.postArticle = (req, res, next) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     const sauce = new Sauce({
@@ -54,7 +54,7 @@ exports.postArticle = (req, res) => {
 //findById --Finds a single document by its _id field. 
 //findById(id) is almost* equivalent to findOne({ _id: id }). 
 //If you want to query by a document's _id, use findById() instead of findOne().
-exports.getOneArticle = async (req, res) => {
+/*exports.getOneArticle = async (req, res) => {
     try {
         const oneArticle = await Sauce.findById({ _id: req.params.id }).exec();
         res.status(200).json(oneArticle);
@@ -62,23 +62,23 @@ exports.getOneArticle = async (req, res) => {
         res.status(500).json({ error });
     }
 };
+*/
 
-/*
 exports.getOneArticle = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
-            res.status(200).json('<ID : '+ req.params.id +' >'+ sauce);
+            res.status(200).json(sauce);
         })
         .catch((error) => {
             res.status(404).json({ error });
         });
 };
-*/  
-exports.updateArticle = (req, res) => {
+
+exports.updateArticle = (req, res, next) => {
         const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
         {
             ...JSON.parse(req.body.sauce),
-            image: `images/${req.file.filename}`  //`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`  //`images/${req.file.filename}`
         } : { ...req.body };
 
         Sauce.updateOne({_id: req.params.id}, { ...sauceObject, _id: req.params.id})
@@ -122,7 +122,7 @@ exports.updateArticle = (req, res, next) => {
 };
 
 */
-exports.deleteArticle = (req, res) => {
+exports.deleteArticle = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then(sauce => {
             const filename = sauce.imageUrl.split('/images/')[1];
@@ -140,7 +140,7 @@ exports.deleteArticle = (req, res) => {
         );
 };
   
-exports.getAllSaucearticles = (req, res) => {  
+exports.getAllSaucearticles = (req, res, next) => {  
     Sauce.find()
         .then((sauces) => {
             res.status(200).json(sauces);
@@ -150,13 +150,18 @@ exports.getAllSaucearticles = (req, res) => {
         });
 };
 
-exports.likeArticle = (req, res) => {
-/*   requete  body inclut userId, like 0/1/-1
-*/
+exports.likeArticle = (req, res, next) => {
+//   requete  body inclut userId, like 0/1/-1
     Sauce.findOne({_id: req.params.id}) //we call _id as the id from frontend 
-        .then((element) => { 
+    
+        .then((sauce) => { 
+            console.log({_id: req.params.id});
+            console.log(req.body.userId);
+            console.log(req.body.bodyOfReqPostmanLike); //undefined on google
+            console.log(sauce);   // null... on postman
+            console.log(sauce.usersLiked);
             //like = 1 (likes = +1) si l'utilisateur like premiere fois(ajouter liker)
-            if (!element.usersLiked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 1) {   
+            if (!sauce.usersLiked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 1) {   
                // modifier le data sur mongoDB
                 Sauce.updateOne({_id: req.params.id}, 
                     { 
@@ -170,7 +175,7 @@ exports.likeArticle = (req, res) => {
                         res.status(400).json({ error });
                 });
             //like = 0 (pas de vote)
-            } else if (element.usersLiked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 0) { 
+            } else if (sauce.usersLiked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 0) { 
                 Sauce.updateOne({_id: req.params.id}, 
                 { 
                     $inc: {likes: -1}, //enlever un like et userId sur DB
@@ -183,7 +188,7 @@ exports.likeArticle = (req, res) => {
                     res.status(400).json({ error });
             });
             //like = -1 (dislikes = +1)
-            } else if (!element.usersDisliked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === -1) {
+            } else if (!sauce.usersDisliked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === -1) {
                 Sauce.updateOne({_id: req.params.id}, 
                     { 
                         $inc: {dislikes: 1}, 
@@ -196,7 +201,7 @@ exports.likeArticle = (req, res) => {
                         res.status(400).json({ error });
                 });
             //like = 0 (dislike = 0 , dislike enlevé)
-            } else if (element.usersDisliked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 0) {
+            } else if (sauce.usersDisliked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 0) {
                 Sauce.updateOne({_id: req.params.id}, 
                     { 
                         $inc: {dislikes: -1}, 
