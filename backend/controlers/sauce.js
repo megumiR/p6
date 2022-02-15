@@ -34,7 +34,7 @@ exports.postArticle = (req, res, next) => {
     );
 }; */
 // COPIED et modifie par le course----------
-exports.postArticle = (req, res, next) => {
+exports.postArticle = (req, res) => {
     const sauceObject = JSON.parse(req.body.sauce);
     delete sauceObject._id;
     const sauce = new Sauce({
@@ -50,11 +50,20 @@ exports.postArticle = (req, res, next) => {
         }
     );
 };
+//ECMA2017...??  
+//findById --Finds a single document by its _id field. 
+//findById(id) is almost* equivalent to findOne({ _id: id }). 
+//If you want to query by a document's _id, use findById() instead of findOne().
+exports.getOneArticle = async (req, res) => {
+    try {
+        const oneArticle = await Sauce.findById({ _id: req.params.id }).exec();
+        res.status(200).json(oneArticle);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+};
 
-
-
-
-
+/*
 exports.getOneArticle = (req, res, next) => {
     Sauce.findOne({ _id: req.params.id })
         .then((sauce) => {
@@ -64,24 +73,32 @@ exports.getOneArticle = (req, res, next) => {
             res.status(404).json({ error });
         });
 };
-  
-exports.updateArticle = (req, res, next) => {
-    const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
-    {
-        ...JSON.parse(req.body.sauce),
-        image: `images/${req.file.filename}`  //`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
-    } : { ...req.body };
+*/  
+exports.updateArticle = (req, res) => {
+        const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
+        {
+            ...JSON.parse(req.body.sauce),
+            image: `images/${req.file.filename}`  //`${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+        } : { ...req.body };
 
-    Sauce.updateOne({_id: req.params.id}, { ...sauceObject, _id: req.params.id})
-        .then(() => {
-            res.status(200).json({ message: 'Votre sauce est bien modifié!' });
-        })
-        .catch((error) => {
-            res.status(400).json({ error });
-        });
+        Sauce.updateOne({_id: req.params.id}, { ...sauceObject, _id: req.params.id})
+            .then(() => {
+                res.status(200).json({ message: 'Votre sauce est bien modifié!' });
+            })
+            .catch((error) => {
+                res.status(400).json({ error });
+            });
+    
+    
 };
-// 'if' modification avec le fichier img ou pas 
-/*    FIRST TRY --
+
+/*    Autorisation de "userId" pour la modification
+if (req.params.id === req.body.userId ) {
+} else {
+    console.log('userId est different à userId d objet');
+}
+
+FIRST TRY --
 exports.updateArticle = (req, res, next) => {
     const sauce = new Sauce({      //  ...req.body ?Either sauce as JSON
         _id: req.params.id,        // _id?? need to put usersLiked n usersDisliked?
@@ -105,7 +122,7 @@ exports.updateArticle = (req, res, next) => {
 };
 
 */
-exports.deleteArticle = (req, res, next) => {
+exports.deleteArticle = (req, res) => {
     Sauce.findOne({_id: req.params.id})
         .then(sauce => {
             const filename = sauce.imageUrl.split('/images/')[1];
@@ -123,7 +140,7 @@ exports.deleteArticle = (req, res, next) => {
         );
 };
   
-exports.getAllSaucearticles = (req, res, next) => {
+exports.getAllSaucearticles = (req, res) => {  
     Sauce.find()
         .then((sauces) => {
             res.status(200).json(sauces);
@@ -133,7 +150,7 @@ exports.getAllSaucearticles = (req, res, next) => {
         });
 };
 
-exports.likeArticle = (req, res, next) => {
+exports.likeArticle = (req, res) => {
 /*   requete  body inclut userId, like 0/1/-1
 */
     Sauce.findOne({_id: req.params.id}) //we call _id as the id from frontend 
