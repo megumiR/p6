@@ -73,12 +73,12 @@ exports.getOneArticle = (req, res, next) => {
             res.status(404).json({ error });
         });
 };
-
+/*
 exports.updateArticle = (req, res, next) => {
         const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
         {
             ...JSON.parse(req.body.sauce),
-            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`  //`images/${req.file.filename}`
+            imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}` 
         } : { ...req.body };
 
         Sauce.updateOne({_id: req.params.id}, { ...sauceObject, _id: req.params.id})
@@ -91,37 +91,35 @@ exports.updateArticle = (req, res, next) => {
     
     
 };
-
-/*    Autorisation de "userId" pour la modification
-if (req.params.id === req.body.userId ) {
-} else {
-    console.log('userId est different à userId d objet');
-}
-
-FIRST TRY --
+*/
+//  CHANGE pour supprimer l'image dans le dossier image
 exports.updateArticle = (req, res, next) => {
-    const sauce = new Sauce({      //  ...req.body ?Either sauce as JSON
-        _id: req.params.id,        // _id?? need to put usersLiked n usersDisliked?
-        name: req.body.name,
-        manufacturer: req.body.manufacturer,
-        description: req.body.description,
-        mainPepper: req.body.mainPepper,
-        imageUrl: req.body.imageUrl,
-        heat: req.body.heat,
-        usersLiked: req.body.usersLiked,
-        usersDisliked: req.body.usersDisliked,      
-        userId: req.body.userId
-    });
-    Sauce.updateOne({_id: req.params.id}, sauce)
+    
+    const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
+    {
+        ...JSON.parse(req.body.sauce),
+        imageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
+    } : { ...req.body };
+    Sauce.findOne({_id: req.params.id})
+        .then((sauce) => {
+            const filename = sauce.imageUrl.split('/images/')[1];
+            fs.unlink(`images/${filename}`, (error) => {
+                if(error) throw error;
+            })
+        })
+        .catch((error) => {
+            res.status(400).json({ error });
+        });
+    Sauce.updateOne({_id: req.params.id}, { ...sauceObject, _id: req.params.id})
         .then(() => {
-            res.status(201).json({ message: 'Votre sauce est bien modifié!' });
+            res.status(200).json({ message: 'Votre sauce est bien modifié!' });
         })
         .catch((error) => {
             res.status(400).json({ error });
         });
 };
 
-*/
+
 exports.deleteArticle = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
         .then(sauce => {
@@ -157,11 +155,11 @@ exports.likeArticle = (req, res, next) => {
         .then((sauce) => { 
             console.log({_id: req.params.id});
             console.log(req.body.userId);
-            console.log(req.body.bodyOfReqPostmanLike); //undefined on google
+            console.log(req.body.like); //undefined on google
             console.log(sauce);   // null... on postman
             console.log(sauce.usersLiked);
             //like = 1 (likes = +1) si l'utilisateur like premiere fois(ajouter liker)
-            if (!sauce.usersLiked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 1) {   
+            if (!sauce.usersLiked.includes(req.body.userId) && req.body.like === 1) {   
                // modifier le data sur mongoDB
                 Sauce.updateOne({_id: req.params.id}, 
                     { 
@@ -175,7 +173,7 @@ exports.likeArticle = (req, res, next) => {
                         res.status(400).json({ error });
                 });
             //like = 0 (pas de vote)
-            } else if (sauce.usersLiked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 0) { 
+            } else if (sauce.usersLiked.includes(req.body.userId) && req.body.like === 0) { 
                 Sauce.updateOne({_id: req.params.id}, 
                 { 
                     $inc: {likes: -1}, //enlever un like et userId sur DB
@@ -188,7 +186,7 @@ exports.likeArticle = (req, res, next) => {
                     res.status(400).json({ error });
             });
             //like = -1 (dislikes = +1)
-            } else if (!sauce.usersDisliked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === -1) {
+            } else if (!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1) {
                 Sauce.updateOne({_id: req.params.id}, 
                     { 
                         $inc: {dislikes: 1}, 
@@ -201,7 +199,7 @@ exports.likeArticle = (req, res, next) => {
                         res.status(400).json({ error });
                 });
             //like = 0 (dislike = 0 , dislike enlevé)
-            } else if (sauce.usersDisliked.includes(req.body.userId) && req.body.bodyOfReqPostmanLike === 0) {
+            } else if (sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0) {
                 Sauce.updateOne({_id: req.params.id}, 
                     { 
                         $inc: {dislikes: -1}, 
