@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+/************ Etablir des regles *************/
 const sauceSchema = mongoose.Schema({
     userId: { type: String, required: true },
     name: { type: String, required: true },
@@ -14,13 +14,6 @@ const sauceSchema = mongoose.Schema({
     dislikes: { type: Number, default: 0 },
     usersLiked: { type: [String]},   //["String<userId>"]  ex ["1", "7", "9"]
     usersDisliked: { type: [String]}
-/*    },
-    {
-        timestamps: true   //si on veut savoir l'heure de creation et modification
-    }
-    */
 });
 
-
 module.exports = mongoose.model('Sauce', sauceSchema);
-

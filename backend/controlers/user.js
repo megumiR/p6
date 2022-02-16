@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
-const User = require('../models/user');  //bring models
+const User = require('../models/user');  
 
 const jwt = require('jsonwebtoken');
 
-/**************** hash avec la fonction bcrypt pour le mot de passe ************/
-exports.signup = (req, res, next) => {                                                      //?? https://www.youtube.com/watch?v=FC7bxxkFLfM&list=PLF88SKt6r7NbipYFd8-xPRAgelSNMTQgm&index=146
+/****** la logique pour signin -- hash avec la fonction bcrypt pour le mot de passe ************/
+exports.signup = (req, res, next) => {        
     bcrypt.hash(req.body.password, 10)
         .then(hash => {
             const user = new User({
@@ -23,8 +23,10 @@ exports.signup = (req, res, next) => {                                          
             res.status(500).json({ error })
         );
 };
+/****** FIN: la logique pour signin  ************/
 
 
+/****** la logique pour login -- l'authentification avec jwt pour login  ****************************/
 exports.login = (req, res, next) => {
     User.findOne({ email: req.body.email })
         .then(user => {
@@ -53,5 +55,4 @@ exports.login = (req, res, next) => {
             res.status(500).json({ error })
         );
 };
-
-    
+/******** FIN: la logique pour login *****************/

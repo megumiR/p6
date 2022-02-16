@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
     if (passvalidatorSchema.validate(req.body.password)) {  //.validate -Methode à valider le mot de passe contre schema
         next();
     } else {
-        return res.status(400).json({ error: "Le mot de passe n'est pas assez fort : majuscule, minuscule, chiffres, pas de l'espace, plus que 8 caractaires" });
+        //return res.status(400).alert({ error: "Le mot de passe n'est pas assez fort : majuscule, minuscule, chiffres, pas de l'espace, plus que 8 caractaires" }).json({ error: "Le mot de passe n'est pas assez fort : majuscule, minuscule, chiffres, pas de l'espace, plus que 8 caractaires" });
+        console.log({ error: "Le mot de passe n'est pas assez fort : majuscule, minuscule, chiffres, pas de l'espace, plus que 8 caractaires" });
     }
 }
