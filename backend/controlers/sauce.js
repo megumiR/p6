@@ -93,7 +93,7 @@ exports.getOneSauce = (req, res, next) => {
             res.status(404).json({ error });
         });
 };
-/*
+
 exports.updateArticle = (req, res, next) => {
         const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
         {
@@ -108,10 +108,8 @@ exports.updateArticle = (req, res, next) => {
             .catch((error) => {
                 res.status(400).json({ error });
             });
-    
-    
 };
-*/
+/*
 //  CHANGE pour supprimer l'image dans le dossier image
 exports.updateSauce = (req, res, next) => {
     
@@ -138,7 +136,7 @@ exports.updateSauce = (req, res, next) => {
             res.status(400).json({ error });
         });
 };
-
+*/
 
 exports.deleteSauce = (req, res, next) => {
     Sauce.findOne({_id: req.params.id})
