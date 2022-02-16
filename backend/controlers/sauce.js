@@ -94,7 +94,7 @@ exports.getOneSauce = (req, res, next) => {
         });
 };
 
-exports.updateArticle = (req, res, next) => {
+exports.updateSauce = (req, res, next) => {
         const sauceObject = req.file ?              // s'il y a un fichier {oui traiter l'image}:{non traiter l'objet}
         {
             ...JSON.parse(req.body.sauce),
