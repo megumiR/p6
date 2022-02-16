@@ -21,8 +21,7 @@ exports.postSauce = (req, res, next) => {
         })
         .catch((error) => {
             res.status(400).json({ error }); 
-        }
-    );
+        });
 };
 /******* FIN: la creation (POST) *****************************************/
 
@@ -67,7 +66,8 @@ exports.deleteSauce = (req, res, next) => {
             fs.unlink(`images/${filename}`, () => {                  // fonction unlink pour supprimer
                 Sauce.deleteOne({_id: req.params.id})
                     .then(() => 
-                        res.status(200).json({ message: 'Supprimé!' }))
+                        res.status(200).json({ message: 'Supprimé!' })
+                    )
                     .catch((error) => {
                         res.status(400).json({ error })
                     });
@@ -115,20 +115,20 @@ exports.likeSauce = (req, res, next) => {
                     })
                     .catch((error) => {
                         res.status(400).json({ error });
-                });
+                    });
             //like = 0 (pas de vote)
             } else if (sauce.usersLiked.includes(req.body.userId) && req.body.like === 0) { 
                 Sauce.updateOne({_id: req.params.id}, 
-                { 
-                    $inc: {likes: -1},                      //enlever un like et userId sur MongoDB
-                    $pull: {usersLiked: req.body.userId}    //l'operateur de MongoDB(enlever la valeur dans array)
-                })
-                .then(() => {
-                    res.status(201).json({ message: 'Un like ajouté est enlevé!(DB modifié)' });
-                })
-                .catch((error) => {
-                    res.status(400).json({ error });
-            });
+                    { 
+                        $inc: {likes: -1},                      //enlever un like et userId sur MongoDB
+                        $pull: {usersLiked: req.body.userId}    //l'operateur de MongoDB(enlever la valeur dans array)
+                    })
+                    .then(() => {
+                        res.status(201).json({ message: 'Un like ajouté est enlevé!(DB modifié)' });
+                    })
+                    .catch((error) => {
+                        res.status(400).json({ error });
+                    });
             //like = -1 (dislikes = +1)
             } else if (!sauce.usersDisliked.includes(req.body.userId) && req.body.like === -1) {
                 Sauce.updateOne({_id: req.params.id}, 
@@ -141,7 +141,7 @@ exports.likeSauce = (req, res, next) => {
                     })
                     .catch((error) => {
                         res.status(400).json({ error });
-                });
+                    });
             //like = 0 (dislike = 0 , dislike enlevé)
             } else if (sauce.usersDisliked.includes(req.body.userId) && req.body.like === 0) {
                 Sauce.updateOne({_id: req.params.id}, 
@@ -154,12 +154,13 @@ exports.likeSauce = (req, res, next) => {
                     })
                     .catch((error) => {
                         res.status(400).json({ error });
-                });
+                    });
             } else {
                 console.log('Like dislike if statement is not working?');
             }
-
         })
-        .catch((error) => res.status(400).json({ error }));  
+        .catch((error) => 
+            res.status(400).json({ error })
+        );  
 };
 /********* FIN: Mettre un LIKE ou un DISLIKE à l'article de sauce *********************/

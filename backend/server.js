@@ -7,7 +7,6 @@ const http = require('http');
 const app = require('./app');
 
 //La fonction normalizePort pour retouner le port validé(pas de port String)
-//指定Portやなく使えるPortを探す可能性があるけん文字列が返ってくることがある。それを弾くため
 const normalizePort = val => {
     const port = parseInt(val, 10);
   

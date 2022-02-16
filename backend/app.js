@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 const express = require('express');
 
-const path = require('path'); //for taking images ??
+const path = require('path'); 
 /****** FIN: Importer framework Express, Mongoose et path ********************/
 
 
@@ -12,19 +12,13 @@ mongoose.connect('mongodb+srv://megumi:JZw7qlKVtgp24sVW@clusterprojet6piiquante.
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
-
 //pw: JZw7qlKVtgp24sVW
-//dans le course: 'mongodb+srv://jimbob:<PASSWORD>@cluster0-pme76.mongodb.net/test?retryWrites=true&w=majority'
 /******* FIN: MongoDB Atlas connecte à cluster ***********************************/
 
-
-/*******   *********/
 //Appeler la method express(qui permet de creer application express)
 const app = express();
-
-
-
-app.use(express.json()); //acceder aux requetes json.body
+//acceder aux requetes json.body
+app.use(express.json()); 
 
 /******* Controle d'acces pour les API  ***************************/
 app.use((req, res, next) => {
@@ -34,7 +28,6 @@ app.use((req, res, next) => {
   next();
 });
 /********************* FIN: controle d'acces routes generales*****************/
-//app.use(bodyParser.json());  //maybe not body parser...
 
 
 /************** Gerer la date du dossier images en maniere statique pour framework express*****************/
@@ -51,12 +44,6 @@ const sauceRoutes = require('./routes/sauce')
 /********* Les routes d'autentificartion et  ***********/
 app.use('/api/auth', userRoutes);   // pas de app.post
 app.use('/api/sauces', sauceRoutes);
-/*
-app.post('/api/sauces', sauceRoutes);
-app.put('/api/sauces', sauceRoutes);
-app.delete('/api/sauces', sauceRoutes);
-app.get('/api/sauces', sauceRoutes);
-*/
 /********* FIN: Les routes d'autentificartion et  ***********/
 
 
